@@ -2,28 +2,24 @@
 // Notify the client over serial when a temperature reading changes
 
 static int8_t temp = 0;
+AccelerationReading accel = {0, 0, 0};
 
 // the setup routine runs once when you press reset:
-void setup() 
+void setup()
 {
-  // initialize serial communication at 57600 bits per second:
-  Serial.begin(57600); 
+  Serial.begin(57600);
 }
 
 void loop()
 {
- bool notify = false;
- 
- int8_t newTemp = Bean.getTemperature();
- 
- if ( newTemp != temp )
- {
-   temp = newTemp;
-   
-   Serial.print("Temperature: ");
-   Serial.println(temp);
- }
-  
- // Sleep for a second before reading the temperature again  
- Bean.sleep(1000);  
+  accel = Bean.getAcceleration();
+  Serial.print("[");
+  Serial.print(accel.xAxis);
+  Serial.print(",");
+  Serial.print(accel.yAxis);
+  Serial.print(",");
+  Serial.print(accel.zAxis);
+  Serial.print("]");
+  Serial.println("");
+  Bean.sleep(50);
 }
